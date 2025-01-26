@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
+  title: 'Innnocore Tech Solutions',
+  description: 'Innocore is a full-stack web development company that specializes in creating innovative and high-performance web applications for businesses and individuals.',
 }
 
 export default function RootLayout({
