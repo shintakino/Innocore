@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Add responsive base styles */
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply antialiased;
+    @apply text-base;
+    @apply overflow-x-hidden;
+  }
+
+  /* Improve text readability on mobile */
+  p {
+    @apply text-sm sm:text-base;
+  }
+
+  /* Responsive headings */
+  h1 {
+    @apply text-3xl sm:text-4xl lg:text-5xl;
+  }
+
+  h2 {
+    @apply text-2xl sm:text-3xl lg:text-4xl;
+  }
+
+  h3 {
+    @apply text-xl sm:text-2xl lg:text-3xl;
+  }
+}
+
+/* Add responsive container padding */
+@layer components {
+  .container-padding {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+
+  .btn-glow {
+    @apply relative overflow-hidden;
+  }
+
+  .btn-glow::before {
+    @apply content-[''] absolute top-0 left-[-100%] w-full h-full 
+      bg-gradient-to-r from-transparent via-white/30 to-transparent
+      transform transition-all duration-1000 ease-in-out;
+  }
+
+  .btn-glow:hover::before {
+    @apply left-[100%];
+  }
+
+  .btn-gradient {
+    @apply bg-gradient-to-r from-orange-500 to-orange-600
+      hover:from-orange-600 hover:to-orange-700
+      text-white shadow-orange-500/30
+      hover:shadow-orange-500/50
+      transition-all duration-300;
+  }
+
+  .btn-outline-glow {
+    @apply border-2 border-orange-500/50
+      hover:border-orange-500
+      shadow-[0_0_15px_rgba(255,107,0,0.2)]
+      hover:shadow-[0_0_25px_rgba(255,107,0,0.4)]
+      transition-all duration-300;
+  }
+}
+
+/* Existing styles... */
+.section-background {
+  background-image: url("https://hebbkx1anhila5yf.public.blob.vercel-storage.com/background.jpg-8yOvZY7qfVgddgtX4PPagYXzoOCWYM.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  @apply relative;
+}
+
+/* Add responsive utilities */
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
