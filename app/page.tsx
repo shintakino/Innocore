@@ -15,6 +15,7 @@ import LoadingScreen from "@/components/LoadingScreen"
 import { SpotlightPreview } from "@/components/ui/spotlight"
 import { ScrollAnimation } from "@/components/ScrollAnimation"
 import { SpotlightSection } from "@/components/ui/spotlight-section"
+import TechnologiesSection from "@/components/technologies-section"
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true)
@@ -43,6 +44,13 @@ export default function Home() {
           <ScrollAnimation>
             <SpotlightSection className="bg-gray-900/50" fill="#ff6b00">
               <Services />
+            </SpotlightSection>
+          </ScrollAnimation>
+          <ScrollAnimation>
+            <SpotlightSection className="bg-gray-900/50" fill="#ff6b00">
+              <div className="relative w-full">
+                <TechnologiesSection />
+              </div>
             </SpotlightSection>
           </ScrollAnimation>
           <ScrollAnimation>
