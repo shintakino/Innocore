@@ -11,18 +11,66 @@ import { SpotlightPreview } from "@/components/ui/spotlight"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
 import { motion } from "framer-motion"
+import { toast } from "sonner"
+
+interface FormData {
+  firstName: string
+  lastName: string
+  email: string
+  message: string
+}
 
 export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [formData, setFormData] = useState<FormData>({
+    firstName: "",
+    lastName: "",
+    email: "",
+    message: ""
+  })
 
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
 
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    setTimeout(() => setIsSubmitting(false), 1000)
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      const data = await response.json()
+
+      if (data.success) {
+        toast.success("Message sent successfully!")
+        setFormData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          message: ""
+        })
+      } else {
+        toast.error("Failed to send message. Please try again.")
+      }
+    } catch (error) {
+      toast.error("An error occurred. Please try again later.")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -37,7 +85,6 @@ export default function ContactPage() {
       <main className="flex-grow">
         <SpotlightSection fill="#ff6b00" className="section-background relative z-10">
           <div className="relative py-16 sm:py-24 lg:py-32">
-            {/* Grid Pattern Background */}
             <div
               className="absolute inset-0 bg-[linear-gradient(to_right,#1f2937_1px,transparent_1px),linear-gradient(to_bottom,#1f2937_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)]"
               aria-hidden="true"
@@ -67,26 +114,50 @@ export default function ContactPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.3 }}
                 >
-                  {/* Contact Form */}
                   <div className="bg-gray-900/70 p-6 sm:p-8 rounded-2xl border border-gray-800 backdrop-blur-sm">
                     <form onSubmit={handleSubmit} className="space-y-6">
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div>
                           <label className="block text-sm font-medium text-gray-300 mb-2">First Name</label>
-                          <Input className="bg-gray-800/50 border-gray-700" />
+                          <Input 
+                            name="firstName"
+                            value={formData.firstName}
+                            onChange={handleChange}
+                            required
+                            className="bg-gray-800/50 border-gray-700" 
+                          />
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-gray-300 mb-2">Last Name</label>
-                          <Input className="bg-gray-800/50 border-gray-700" />
+                          <Input 
+                            name="lastName"
+                            value={formData.lastName}
+                            onChange={handleChange}
+                            required
+                            className="bg-gray-800/50 border-gray-700" 
+                          />
                         </div>
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-300 mb-2">Email</label>
-                        <Input type="email" className="bg-gray-800/50 border-gray-700" />
+                        <Input 
+                          type="email"
+                          name="email"
+                          value={formData.email}
+                          onChange={handleChange}
+                          required
+                          className="bg-gray-800/50 border-gray-700" 
+                        />
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-300 mb-2">Message</label>
-                        <Textarea className="bg-gray-800/50 border-gray-700 min-h-[120px]" />
+                        <Textarea 
+                          name="message"
+                          value={formData.message}
+                          onChange={handleChange}
+                          required
+                          className="bg-gray-800/50 border-gray-700 min-h-[120px]" 
+                        />
                       </div>
                       <Button
                         type="submit"
@@ -102,7 +173,7 @@ export default function ContactPage() {
                     </form>
                   </div>
 
-                  {/* Contact Information & Map */}
+                  {/* Contact Information & Map section remains the same */}
                   <div className="space-y-6">
                     <div className="bg-gray-900/70 p-4 sm:p-6 lg:p-8 rounded-2xl border border-gray-800 backdrop-blur-sm">
                       <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold text-white mb-6">Contact Information</h3>
@@ -131,7 +202,6 @@ export default function ContactPage() {
                       </div>
                     </div>
 
-                    {/* Google Map */}
                     <div className="bg-gray-900/70 p-2 rounded-2xl border border-gray-800 backdrop-blur-sm h-[250px] sm:h-[300px] lg:h-[250px]">
                       <iframe
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d254936.27901755414!2d125.4625966!3d7.190708399999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x32f96d9f519e327f%3A0x7c4be9896a644c11!2sDavao%20City%2C%20Davao%20del%20Sur!5e0!3m2!1sen!2sph!4v1708925433044!5m2!1sen!2sph"
@@ -155,4 +225,3 @@ export default function ContactPage() {
     </motion.div>
   )
 }
-
